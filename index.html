@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="https://www.android.com/static/img/favicon.ico">
 <title>Android Dev Roadmap 2025</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -10,63 +14,63 @@
     --bg: #0f0f11; --bg2: #1a1a1f; --bg3: #222228;
     --border: #2e2e38; --border2: #3a3a48;
     --text: #e8e8f0; --text2: #9898b0; --text3: #5a5a70;
-    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --font: 'JetBrains Mono', 'Fira Code', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Maple Mono NF', 'JetBrains Mono', 'Fira Code', monospace;
   }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
   .container { max-width: 780px; margin: 0 auto; padding: 32px 20px 64px; }
 
-  h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
-  .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; font-family: var(--mono); letter-spacing: -0.02em; }
+  .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 20px; font-family: var(--mono); }
 
   .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px; }
-  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; font-family: var(--mono); }
   .tag.stable { background: #0a2a20; color: #4ecb8a; border: 1px solid #1a5a3a; }
   .tag.new    { background: #1a1340; color: #9b8ff5; border: 1px solid #3a2a80; }
   .tag.watch  { background: #2a1a08; color: #d4944a; border: 1px solid #5a3a18; }
 
   .timeline { position: relative; }
-  .phase { display: flex; gap: 0; margin-bottom: 0; }
+  .phase { display: flex; gap: 0; margin-bottom: 0; align-items: stretch; }
   .tl-col { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
   .dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 22px; z-index: 1; flex-shrink: 0; }
-  .vline { width: 2px; flex: 1; min-height: 12px; }
+  .vline { width: 2px; flex: 1 0 auto; min-height: 40px; }
 
-  .card { flex: 1; margin: 10px 0 0; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); overflow: hidden; transition: border-color .15s; }
+  .card { flex: 1; margin: 10px 0 0; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); min-width: 0; transition: border-color .15s; }
   .card:hover { border-color: var(--border2); }
   .card.open { border-color: var(--border2); }
 
   .card-header { padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; user-select: none; }
   .card-meta { display: flex; flex-direction: column; gap: 3px; flex: 1; }
-  .phase-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-  .phase-title { font-size: 15px; font-weight: 500; line-height: 1.35; }
-  .phase-dur { font-size: 12px; color: var(--text2); margin-top: 1px; }
+  .phase-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-family: var(--mono); }
+  .phase-title { font-size: 15px; font-weight: 500; line-height: 1.35; font-family: var(--mono); }
+  .phase-dur { font-size: 12px; color: var(--text2); margin-top: 1px; font-family: var(--mono); }
   .ptags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
-  .ptag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
-  .chevron { font-size: 10px; color: var(--text3); margin-top: 5px; flex-shrink: 0; transition: transform .2s; }
+  .ptag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; font-family: var(--mono); }
+  .chevron { font-size: 10px; color: var(--text3); margin-top: 5px; flex-shrink: 0; transition: transform .2s; font-family: var(--mono); }
   .card.open .chevron { transform: rotate(180deg); }
 
   .card-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
-  .card.open .card-body { max-height: 2000px; }
+  .card.open .card-body { max-height: 10000px; }
   .card-inner { padding: 0 16px 16px; }
   .divider { height: 1px; background: var(--border); margin-bottom: 14px; }
 
   .topics { display: flex; flex-direction: column; gap: 9px; }
   .topic-row { display: flex; gap: 9px; align-items: flex-start; }
   .tdot { width: 5px; height: 5px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
-  .ttext { font-size: 13px; color: var(--text2); line-height: 1.6; }
-  .ttext strong { font-weight: 500; color: var(--text); }
+  .ttext { font-size: 13px; color: var(--text2); line-height: 1.7; font-family: var(--font); }
+  .ttext strong { font-weight: 500; color: var(--text); font-family: var(--mono); }
   .ttext code { font-family: var(--mono); font-size: 11.5px; background: var(--bg3); padding: 1px 5px; border-radius: 4px; color: #c0c0e0; }
 
   .newbox { margin-top: 14px; padding: 11px 13px; border-radius: 8px; border-left: 3px solid; }
-  .newbox-label { font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 5px; }
-  .newbox-text { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+  .newbox-label { font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 5px; font-family: var(--mono); }
+  .newbox-text { font-size: 12.5px; color: var(--text2); line-height: 1.7; font-family: var(--font); }
 
   .milestone { margin-top: 12px; padding: 11px 13px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); }
-  .milestone-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
-  .milestone-text { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+  .milestone-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; font-family: var(--mono); }
+  .milestone-text { font-size: 12.5px; color: var(--text2); line-height: 1.7; font-family: var(--font); }
 
-  .res { margin-top: 11px; font-size: 12px; color: var(--text3); line-height: 1.6; }
-  .res strong { color: var(--text2); font-weight: 500; }
+  .res { margin-top: 11px; font-size: 12px; color: var(--text3); line-height: 1.7; font-family: var(--font); }
+  .res strong { color: var(--text2); font-weight: 500; font-family: var(--mono); }
 
   /* Per-phase colors */
   .p0 .dot, .p0 .tdot { background: #7a7a88; }
@@ -116,6 +120,8 @@
   .p6 .newbox { background: #14220820; border-color: #5a9922; }
   .p6 .newbox-label { color: #80c040; }
 </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -150,7 +156,7 @@
           <div class="divider"></div>
 
           <!-- Tier 1 -->
-          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4ecb8a;margin-bottom:10px;">Tier 1 — Deep mastery (~35%) · you use this every single day</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4ecb8a;margin-bottom:10px;font-family:var(--mono);">Tier 1 — Deep mastery (~35%) · you use this every single day</div>
           <div class="topics">
             <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Null safety</strong> — <code>?</code>, <code>?.</code>, <code>?:</code>, <code>!!</code>. Android APIs express absence through types, not exceptions. <code>String?</code> vs <code>String</code> appears on every screen, every ViewModel, every API model.</div></div>
             <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Data classes + sealed classes + enum classes</strong> — data classes for API responses, UI state, navigation args. Sealed classes as state machines (<code>Loading | Success | Error</code>). Enum classes for fixed sets like user roles, sort orders, tab identifiers.</div></div>
@@ -165,7 +171,7 @@
           </div>
 
           <!-- Tier 2 -->
-          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#d4944a;margin-bottom:10px;margin-top:18px;">Tier 2 — Working knowledge (~20%) · you'll encounter this regularly</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#d4944a;margin-bottom:10px;margin-top:18px;font-family:var(--mono);">Tier 2 — Working knowledge (~20%) · you'll encounter this regularly</div>
           <div class="topics">
             <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Property delegation — <code>by lazy</code>, <code>by viewModels()</code></strong> — <code>by lazy</code> for expensive one-time computation. <code>by viewModels()</code> is literally how you access a ViewModel in a Fragment. You'll use these without thinking about the delegation mechanism underneath.</div></div>
             <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Inline functions + <code>reified</code></strong> — Compose internally uses <code>inline</code> functions for performance (composables are inlined at compile time). <code>reified</code> lets you access generic type info at runtime without reflection: <code>inline fun &lt;reified T&gt; intent() = Intent(this, T::class.java)</code>. You'll write some of these in utility code.</div></div>
@@ -176,7 +182,7 @@
           </div>
 
           <!-- Tier 3 -->
-          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9898aa;margin-bottom:10px;margin-top:18px;">Tier 3 — Skim-level (~10%) · know it exists, learn when you hit it</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9898aa;margin-bottom:10px;margin-top:18px;font-family:var(--mono);">Tier 3 — Skim-level (~10%) · know it exists, learn when you hit it</div>
           <div class="topics">
             <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Operator overloading</strong> — Compose uses <code>+</code> to combine Modifiers (<code>Modifier.padding(8.dp) + Modifier.fillMaxWidth()</code>). You won't write operator overloads, but you read them. Knowing <code>operator fun plus()</code> exists removes the confusion.</div></div>
             <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Covariance / contravariance (<code>in</code>/<code>out</code>)</strong> — you'll see <code>Flow&lt;out T&gt;</code> in library source code. You don't need to declare variance yourself yet, but knowing what <code>out</code> means (producer, can be read but not written) prevents confusion when reading Kotlin stdlib and Jetpack signatures.</div></div>
@@ -184,11 +190,11 @@
           </div>
 
           <!-- Skip -->
-          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5a5a70;margin-bottom:10px;margin-top:18px;">Skip entirely for now (~35%)</div>
-          <div style="font-size:13px;color:var(--text3);line-height:1.7;">DSL builders · Reflection · Kotlin/JS specifics · <code>expect</code>/<code>actual</code> multiplatform declarations (Phase 6 problem) · Complex generic variance you'd write yourself · KSP annotation processor authoring · Metaprogramming · Kotlin scripting</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5a5a70;margin-bottom:10px;margin-top:18px;font-family:var(--mono);">Skip entirely for now (~35%)</div>
+          <div style="font-size:13px;color:var(--text3);line-height:1.7;font-family:var(--font);">DSL builders · Reflection · Kotlin/JS specifics · <code>expect</code>/<code>actual</code> multiplatform declarations (Phase 6 problem) · Complex generic variance you'd write yourself · KSP annotation processor authoring · Metaprogramming · Kotlin scripting</div>
 
           <div class="newbox" style="background:#22222820;border-left:3px solid #7a7a88;margin-top:16px;">
-            <div class="newbox-label" style="color:#9898aa;">Kotlin 2.x + K2 compiler — what changed</div>
+            <div class="newbox-label" style="color:#9898aa;font-family:var(--mono);">Kotlin 2.x + K2 compiler — what changed</div>
             <div class="newbox-text">Android Studio Meerkat now supports Kotlin K2 mode for Live Edit and Compose Preview. KSP2 (annotation processing) is now stable. Practically: faster builds, clearer error messages, nothing you configure manually. Just use the latest Android Studio and it's already on. The language itself didn't break anything — K2 is a compiler rewrite under the hood.</div>
           </div>
           <div class="res"><strong>Resources:</strong> Kotlin Koans for Tier 1 foundations. "Kotlin in Action" (2nd ed.) covers Tiers 1 and 2 with depth. The official Kotlin docs are good as a reference once you know what you're looking for — don't read them linearly.</div>
@@ -405,6 +411,130 @@
 
 <script>
 function toggle(card) { card.classList.toggle('open'); }
+</script>
+<script>
+// GSAP Animations
+gsap.registerPlugin(ScrollTrigger);
+
+// Initial page load animations
+gsap.from("h1", {
+  opacity: 0,
+  y: 20,
+  duration: 0.8,
+  ease: "power3.out"
+});
+
+gsap.from(".subtitle", {
+  opacity: 0,
+  y: 20,
+  duration: 0.8,
+  delay: 0.2,
+  ease: "power3.out"
+});
+
+gsap.from(".tags .tag", {
+  opacity: 0,
+  y: 20,
+  duration: 0.6,
+  stagger: 0.1,
+  delay: 0.4,
+  ease: "power3.out"
+});
+
+// Timeline phase dots and lines animation
+gsap.from(".phase .dot", {
+  opacity: 0,
+  scale: 0.5,
+  duration: 0.8,
+  stagger: 0.2,
+  delay: 0.8,
+  ease: "back.out(1.7)"
+});
+
+gsap.from(".phase .vline", {
+  opacity: 0,
+  height: 0,
+  duration: 0.8,
+  stagger: 0.2,
+  delay: 0.8,
+  ease: "power2.out"
+});
+
+// Card animations with scroll trigger
+const cards = gsap.utils.toArray(".card");
+cards.forEach((card, i) => {
+  gsap.from(card, {
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+    ease: "power3.out",
+    scrollTrigger: {
+      trigger: card,
+      start: "top 90%",
+      toggleActions: "play none none none"
+    }
+  });
+
+  // Enhanced hover effect with GSAP
+  const cardHeader = card.querySelector(".card-header");
+  if (cardHeader) {
+    const hoverTl = gsap.timeline({ paused: true });
+    hoverTl.to(card, { 
+      borderColor: "#3a3a48",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+    
+    card.addEventListener("mouseenter", () => hoverTl.play());
+    card.addEventListener("mouseleave", () => hoverTl.reverse());
+  }
+});
+
+// Chevron rotation with GSAP for smoother animation
+gsap.set(".chevron", { transformOrigin: "center" });
+const chevrons = gsap.utils.toArray(".chevron");
+chevrons.forEach(chevron => {
+  const card = chevron.closest(".card");
+  if (card) {
+    gsap.to(chevron, {
+      rotation: 180,
+      duration: 0.4,
+      ease: "power2.out",
+      paused: true,
+      reversed: true
+    });
+    
+    // Sync with card open state
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        if (mutation.attributeName === "class") {
+          const isOpen = card.classList.contains("open");
+          gsap.to(chevron, {
+            rotation: isOpen ? 180 : 0,
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: true
+          });
+        }
+      });
+    });
+    observer.observe(card, { attributes: true });
+  }
+});
+
+
+
+// Timeline line connecting effect
+gsap.from(".phase", {
+  opacity: 0,
+  x: -40,
+  duration: 1,
+  stagger: 0.15,
+  delay: 1,
+  ease: "power3.out"
+});
+
+
 </script>
 </body>
 </html>
