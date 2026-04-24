@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Android Dev Roadmap 2025</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f0f11; --bg2: #1a1a1f; --bg3: #222228;
+    --border: #2e2e38; --border2: #3a3a48;
+    --text: #e8e8f0; --text2: #9898b0; --text3: #5a5a70;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+  .container { max-width: 780px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+  .tag.stable { background: #0a2a20; color: #4ecb8a; border: 1px solid #1a5a3a; }
+  .tag.new    { background: #1a1340; color: #9b8ff5; border: 1px solid #3a2a80; }
+  .tag.watch  { background: #2a1a08; color: #d4944a; border: 1px solid #5a3a18; }
+
+  .timeline { position: relative; }
+  .phase { display: flex; gap: 0; margin-bottom: 0; }
+  .tl-col { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 22px; z-index: 1; flex-shrink: 0; }
+  .vline { width: 2px; flex: 1; min-height: 12px; }
+
+  .card { flex: 1; margin: 10px 0 0; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); overflow: hidden; transition: border-color .15s; }
+  .card:hover { border-color: var(--border2); }
+  .card.open { border-color: var(--border2); }
+
+  .card-header { padding: 14px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; user-select: none; }
+  .card-meta { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+  .phase-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .phase-title { font-size: 15px; font-weight: 500; line-height: 1.35; }
+  .phase-dur { font-size: 12px; color: var(--text2); margin-top: 1px; }
+  .ptags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .ptag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
+  .chevron { font-size: 10px; color: var(--text3); margin-top: 5px; flex-shrink: 0; transition: transform .2s; }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .card-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+  .card.open .card-body { max-height: 2000px; }
+  .card-inner { padding: 0 16px 16px; }
+  .divider { height: 1px; background: var(--border); margin-bottom: 14px; }
+
+  .topics { display: flex; flex-direction: column; gap: 9px; }
+  .topic-row { display: flex; gap: 9px; align-items: flex-start; }
+  .tdot { width: 5px; height: 5px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+  .ttext { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .ttext strong { font-weight: 500; color: var(--text); }
+  .ttext code { font-family: var(--mono); font-size: 11.5px; background: var(--bg3); padding: 1px 5px; border-radius: 4px; color: #c0c0e0; }
+
+  .newbox { margin-top: 14px; padding: 11px 13px; border-radius: 8px; border-left: 3px solid; }
+  .newbox-label { font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 5px; }
+  .newbox-text { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+
+  .milestone { margin-top: 12px; padding: 11px 13px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); }
+  .milestone-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+  .milestone-text { font-size: 12.5px; color: var(--text2); line-height: 1.65; }
+
+  .res { margin-top: 11px; font-size: 12px; color: var(--text3); line-height: 1.6; }
+  .res strong { color: var(--text2); font-weight: 500; }
+
+  /* Per-phase colors */
+  .p0 .dot, .p0 .tdot { background: #7a7a88; }
+  .p0 .vline { background: linear-gradient(#7a7a8840, #7a7a8810); }
+  .p0 .phase-label { color: #9898aa; }
+  .p0 .ptag { background: #222228; color: #9898aa; }
+
+  .p1 .dot, .p1 .tdot { background: #7f77dd; }
+  .p1 .vline { background: linear-gradient(#7f77dd40, #7f77dd10); }
+  .p1 .phase-label { color: #9b8ff5; }
+  .p1 .ptag { background: #1a1340; color: #9b8ff5; }
+  .p1 .newbox { background: #1a134020; border-color: #7f77dd; }
+  .p1 .newbox-label { color: #9b8ff5; }
+
+  .p2 .dot, .p2 .tdot { background: #22a87a; }
+  .p2 .vline { background: linear-gradient(#22a87a40, #22a87a10); }
+  .p2 .phase-label { color: #4ecb8a; }
+  .p2 .ptag { background: #0a2a20; color: #4ecb8a; }
+  .p2 .newbox { background: #0a2a2020; border-color: #22a87a; }
+  .p2 .newbox-label { color: #4ecb8a; }
+
+  .p3 .dot, .p3 .tdot { background: #d4944a; }
+  .p3 .vline { background: linear-gradient(#d4944a40, #d4944a10); }
+  .p3 .phase-label { color: #d4944a; }
+  .p3 .ptag { background: #2a1a08; color: #d4944a; }
+  .p3 .newbox { background: #2a1a0820; border-color: #d4944a; }
+  .p3 .newbox-label { color: #d4944a; }
+
+  .p4 .dot, .p4 .tdot { background: #4a9de0; }
+  .p4 .vline { background: linear-gradient(#4a9de040, #4a9de010); }
+  .p4 .phase-label { color: #6db8f5; }
+  .p4 .ptag { background: #0a1e30; color: #6db8f5; }
+  .p4 .newbox { background: #0a1e3020; border-color: #4a9de0; }
+  .p4 .newbox-label { color: #6db8f5; }
+
+  .p5 .dot, .p5 .tdot { background: #d85a30; }
+  .p5 .vline { background: linear-gradient(#d85a3040, #d85a3010); }
+  .p5 .phase-label { color: #e88060; }
+  .p5 .ptag { background: #2a1008; color: #e88060; }
+  .p5 .newbox { background: #2a100820; border-color: #d85a30; }
+  .p5 .newbox-label { color: #e88060; }
+
+  .p6 .dot, .p6 .tdot { background: #5a9922; }
+  .p6 .vline { background: linear-gradient(#5a992240, transparent); }
+  .p6 .phase-label { color: #80c040; }
+  .p6 .ptag { background: #142208; color: #80c040; }
+  .p6 .newbox { background: #14220820; border-color: #5a9922; }
+  .p6 .newbox-label { color: #80c040; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Android App Development Roadmap</h1>
+  <p class="subtitle">Updated with Google I/O 2025 · KotlinConf 2025 · Android Studio Meerkat</p>
+
+  <div class="tags">
+    <span class="tag stable">Jetpack Compose — stable</span>
+    <span class="tag stable">KMP — officially stable</span>
+    <span class="tag new">Material 3 Expressive — new</span>
+    <span class="tag new">Navigation 3 — alpha</span>
+    <span class="tag new">Room KMP — stable</span>
+    <span class="tag watch">Android 16 / 16KB page size</span>
+  </div>
+
+  <div class="timeline">
+
+    <!-- PHASE 0 -->
+    <div class="phase p0">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 0</span>
+            <span class="phase-title">Kotlin — ~65% of the language, split into three tiers</span>
+            <span class="phase-dur">~2–2.5 weeks</span>
+            <div class="ptags"><span class="ptag">Kotlin 2.x</span><span class="ptag">K2 compiler</span><span class="ptag">KSP2 stable</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+
+          <!-- Tier 1 -->
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4ecb8a;margin-bottom:10px;">Tier 1 — Deep mastery (~35%) · you use this every single day</div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Null safety</strong> — <code>?</code>, <code>?.</code>, <code>?:</code>, <code>!!</code>. Android APIs express absence through types, not exceptions. <code>String?</code> vs <code>String</code> appears on every screen, every ViewModel, every API model.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Data classes + sealed classes + enum classes</strong> — data classes for API responses, UI state, navigation args. Sealed classes as state machines (<code>Loading | Success | Error</code>). Enum classes for fixed sets like user roles, sort orders, tab identifiers.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Lambdas + function types</strong> — <code>(String) -&gt; Unit</code>, <code>() -&gt; Boolean</code>. Compose passes UI callbacks as function parameters everywhere. You need to write and read these fluently, not just recognise them.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Coroutines — all of it</strong> — <code>suspend</code>, <code>launch</code>, <code>async/await</code>, <code>withContext</code>, <code>Dispatchers</code>, <code>Flow</code>, <code>StateFlow</code>, <code>SharedFlow</code>, <code>channelFlow</code>, structured concurrency, cancellation. Not just the basics — you need to understand <em>why</em> <code>viewModelScope</code> cancels when the ViewModel dies, and why you use <code>Dispatchers.IO</code> for Room/network calls.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Scope functions</strong> — <code>let</code>, <code>run</code>, <code>apply</code>, <code>also</code>, <code>with</code>. Android code uses these constantly for null checks (<code>value?.let { ... }</code>), builder patterns (<code>apply { ... }</code>), and chaining operations. Know which one returns the receiver vs the lambda result.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Collections</strong> — <code>map</code>, <code>filter</code>, <code>flatMap</code>, <code>fold</code>, <code>groupBy</code>, <code>first</code>/<code>firstOrNull</code>, <code>any</code>/<code>all</code>/<code>none</code>, <code>sortedBy</code>. You'll transform API responses into UI models constantly. These need to be fast to write.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Extension functions + object + companion object</strong> — <code>fun Context.toast(msg: String)</code>, singleton instances, factory methods. You'll write and read these throughout every Android codebase.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong><code>val</code>/<code>var</code>, <code>lateinit</code>, <code>lazy</code></strong> — immutability by default, deferred initialisation, lazy computation. <code>private val _state = MutableStateFlow(...)</code> vs <code>val state = _state.asStateFlow()</code> is a pattern you write on every ViewModel.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Default + named parameters + destructuring</strong> — default parameters eliminate builder boilerplate. Named params make composable function calls readable. Destructuring unpacks data classes: <code>val (id, name) = product</code>.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong><code>when</code> expressions</strong> — exhaustive branching on sealed classes is a core pattern. The compiler enforces that every state is handled — no missed <code>else</code> that silently swallows a new state.</div></div>
+          </div>
+
+          <!-- Tier 2 -->
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#d4944a;margin-bottom:10px;margin-top:18px;">Tier 2 — Working knowledge (~20%) · you'll encounter this regularly</div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Property delegation — <code>by lazy</code>, <code>by viewModels()</code></strong> — <code>by lazy</code> for expensive one-time computation. <code>by viewModels()</code> is literally how you access a ViewModel in a Fragment. You'll use these without thinking about the delegation mechanism underneath.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Inline functions + <code>reified</code></strong> — Compose internally uses <code>inline</code> functions for performance (composables are inlined at compile time). <code>reified</code> lets you access generic type info at runtime without reflection: <code>inline fun &lt;reified T&gt; intent() = Intent(this, T::class.java)</code>. You'll write some of these in utility code.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Generics basics — type bounds, basic variance</strong> — you'll constantly work with <code>Flow&lt;List&lt;Product&gt;&gt;</code>, <code>Result&lt;T&gt;</code>, <code>StateFlow&lt;UiState&gt;</code>. You need to write generic repository functions like <code>fun &lt;T&gt; safeCall(block: suspend () -&gt; T): Result&lt;T&gt;</code>. You don't need to write complex variance declarations, but you need to read them in library code.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Interfaces + abstract classes</strong> — Repositories, UseCases, and DataSources are defined as interfaces so they can be swapped in tests. <code>interface ProductRepository</code> with a <code>ProductRepositoryImpl</code> — this pattern is everywhere in clean architecture.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Type aliases</strong> — <code>typealias OnClick = () -&gt; Unit</code>. Used to name complex function types so composable signatures stay readable.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Annotations basics</strong> — <code>@Composable</code>, <code>@HiltViewModel</code>, <code>@Inject</code>, <code>@Serializable</code>, <code>@Entity</code>, <code>@Dao</code>. You don't need to write annotation processors — you just need to use them correctly and understand what each one tells the compiler or framework to do.</div></div>
+          </div>
+
+          <!-- Tier 3 -->
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#9898aa;margin-bottom:10px;margin-top:18px;">Tier 3 — Skim-level (~10%) · know it exists, learn when you hit it</div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Operator overloading</strong> — Compose uses <code>+</code> to combine Modifiers (<code>Modifier.padding(8.dp) + Modifier.fillMaxWidth()</code>). You won't write operator overloads, but you read them. Knowing <code>operator fun plus()</code> exists removes the confusion.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Covariance / contravariance (<code>in</code>/<code>out</code>)</strong> — you'll see <code>Flow&lt;out T&gt;</code> in library source code. You don't need to declare variance yourself yet, but knowing what <code>out</code> means (producer, can be read but not written) prevents confusion when reading Kotlin stdlib and Jetpack signatures.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Coroutine internals</strong> — channels, <code>select</code>, coroutine context, custom coroutine scopes. You'll use <code>viewModelScope</code> and <code>lifecycleScope</code> without needing to understand how the coroutine machinery implements them. Learn this when you need to debug a cancellation issue or build a custom scope.</div></div>
+          </div>
+
+          <!-- Skip -->
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5a5a70;margin-bottom:10px;margin-top:18px;">Skip entirely for now (~35%)</div>
+          <div style="font-size:13px;color:var(--text3);line-height:1.7;">DSL builders · Reflection · Kotlin/JS specifics · <code>expect</code>/<code>actual</code> multiplatform declarations (Phase 6 problem) · Complex generic variance you'd write yourself · KSP annotation processor authoring · Metaprogramming · Kotlin scripting</div>
+
+          <div class="newbox" style="background:#22222820;border-left:3px solid #7a7a88;margin-top:16px;">
+            <div class="newbox-label" style="color:#9898aa;">Kotlin 2.x + K2 compiler — what changed</div>
+            <div class="newbox-text">Android Studio Meerkat now supports Kotlin K2 mode for Live Edit and Compose Preview. KSP2 (annotation processing) is now stable. Practically: faster builds, clearer error messages, nothing you configure manually. Just use the latest Android Studio and it's already on. The language itself didn't break anything — K2 is a compiler rewrite under the hood.</div>
+          </div>
+          <div class="res"><strong>Resources:</strong> Kotlin Koans for Tier 1 foundations. "Kotlin in Action" (2nd ed.) covers Tiers 1 and 2 with depth. The official Kotlin docs are good as a reference once you know what you're looking for — don't read them linearly.</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase p1">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 1</span>
+            <span class="phase-title">Jetpack Compose + Material 3 Expressive</span>
+            <span class="phase-dur">~2 weeks</span>
+            <div class="ptags"><span class="ptag">Compose stable</span><span class="ptag">M3 Expressive — new 2025</span><span class="ptag">Live Edit</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>@Composable functions</strong> — UI is a pure function of state. No XML, no <code>findViewById</code>. A screen is literally <code>@Composable fun ProductScreen(state: ProductUiState)</code>.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>State — <code>remember</code> + <code>mutableStateOf</code></strong> — local UI state that survives recomposition but not navigation or rotation. Understand the difference between this and ViewModel state.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Core layouts</strong> — <code>Column</code>, <code>Row</code>, <code>Box</code>, <code>LazyColumn</code>, <code>LazyVerticalGrid</code>. These replace LinearLayout, ConstraintLayout, RecyclerView. Google is pushing adaptive layouts hard in 2025 — also learn <code>LazyVerticalStaggeredGrid</code>.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Modifier chain</strong> — sizing, padding, click handlers, background, drawing order. Learn the mental model, not every modifier by heart. The IDE autocomplete covers the rest.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Recomposition</strong> — Compose only re-renders composables whose observed state changed. Understanding this prevents subtle performance bugs. The new <code>@FrequentlyChangingValue</code> lint annotation (alpha, I/O 2025) now warns you proactively.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Material 3 components</strong> — <code>Button</code>, <code>TextField</code>, <code>Card</code>, <code>TopAppBar</code>, <code>Scaffold</code>, <code>NavigationBar</code>. Don't build from scratch what M3 gives you for free.</div></div>
+          </div>
+          <div class="newbox">
+            <div class="newbox-label">Material 3 Expressive — Google I/O 2025</div>
+            <div class="newbox-text">Google released M3 Expressive, a major design update with new animated components, spring physics-based motion, richer haptic feedback, and deeper theming. It ships as an update to the existing M3 library — not breaking. Learn stable M3 first, then layer in Expressive components as they stabilise. This is what Android 16's system UI is built on, and it's the direction all new Compose UI is heading.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-label">Milestone</div>
+            <div class="milestone-text">A product listing screen with a <code>LazyVerticalGrid</code> of product cards using hardcoded fake data, a top search bar, and a detail screen that opens on tap. No networking, no database — just composables rendering data. Looks like the browse screen of a real marketplace app.</div>
+          </div>
+          <div class="res"><strong>Resources:</strong> Google's "Jetpack Compose basics" codelab (free, official). Philipp Lackner's Compose beginner playlist (filter to 2024–2025 videos). Material 3 component catalog on GitHub.</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase p2">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 2</span>
+            <span class="phase-title">Architecture — MVVM now, MVI next</span>
+            <span class="phase-dur">~2 weeks</span>
+            <div class="ptags"><span class="ptag">MVVM</span><span class="ptag">MVI gaining traction</span><span class="ptag">UDF</span><span class="ptag">StateFlow</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>MVVM core loop</strong> — ViewModel exposes <code>StateFlow&lt;UiState&gt;</code>. Composable collects it with <code>collectAsStateWithLifecycle()</code>. User actions call ViewModel functions. Zero business logic in composables — they just render and forward events.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Sealed UiState pattern</strong> — one sealed class per screen, exhaustively handled in a <code>when</code> block in the composable. The compiler forces you to handle every state — no runtime surprises.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>One-time events with SharedFlow</strong> — navigation triggers, snackbar messages, dialogs. These are events, not state. <code>SharedFlow(replay = 0)</code> fires once and doesn't replay on recomposition.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>viewModelScope</strong> — coroutines that live and die with the ViewModel. All your async work (network, database) launches here. This is the Android equivalent of your Spring Boot <code>@Async</code> or coroutine scopes on the backend.</div></div>
+          </div>
+          <div class="newbox">
+            <div class="newbox-label">MVI is the direction in 2025 — understand the difference</div>
+            <div class="newbox-text">The 2025 consensus: MVVM for simple screens, MVI (Model-View-Intent) for complex interactive flows. In MVI, user actions are explicit <code>Intent</code> objects. The ViewModel reduces them into a single immutable <code>State</code>. No inconsistent multi-variable state bugs. Compose's reactive nature fits MVI naturally. For a checkout flow, cart state, or order management — MVI is the cleaner choice. For a settings screen — MVVM is enough. Many experienced developers use both in the same app. Start with MVVM, introduce MVI patterns where complexity demands it.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-label">Milestone</div>
+            <div class="milestone-text">Refactor the Phase 1 product screen: all state lives in a ViewModel. Simulate a 1.5s network delay, show Loading spinner → product grid → Error screen with a Retry button. The composable has zero logic — it just reads <code>uiState</code> and calls ViewModel functions.</div>
+          </div>
+          <div class="res"><strong>Resources:</strong> Official "App Architecture" guide at developer.android.com. Philipp Lackner's MVVM with Compose series. Search "MVI Android Compose 2025" — Orbit MVI is a lightweight popular library for this.</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase p3">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 3</span>
+            <span class="phase-title">Navigation — Compose Nav 2 (stable) + watch Nav 3</span>
+            <span class="phase-dur">~1 week</span>
+            <div class="ptags"><span class="ptag">Nav 2.8+ — typed routes</span><span class="ptag">Navigation 3 — alpha</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>NavController + NavHost</strong> — the router. NavHost declares all routes. NavController executes navigation. One controller per app, accessed via <code>LocalNavController</code> or passed as a lambda.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Typed routes (Nav 2.8+)</strong> — define routes as <code>@Serializable</code> data classes, not raw strings. <code>data class ProductDetail(val id: String)</code>. IDE-refactorable, type-safe, no string typos at runtime.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Argument passing rule</strong> — always pass IDs between screens, never full objects. The destination fetches what it needs. Avoids Parcelable boilerplate and keeps navigation lightweight.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Back stack + bottom navigation</strong> — <code>popBackStack()</code>, <code>popUpTo()</code>, <code>launchSingleTop = true</code>. Wire a <code>NavigationBar</code> to NavController. Tab state persists correctly when switching between tabs.</div></div>
+          </div>
+          <div class="newbox">
+            <div class="newbox-label">Navigation 3 — announced Google I/O 2025, not stable yet</div>
+            <div class="newbox-text">Google announced Navigation 3 at I/O 2025. More Compose-idiomatic API, better adaptive layout support for foldables and tablets, and Compose Multiplatform target support. Still in alpha. Learn Navigation 2 now — it's stable and will handle all your Android work. Keep an eye on Nav 3 going stable (estimated late 2025 or early 2026) and plan to migrate when ready.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-label">Milestone</div>
+            <div class="milestone-text">A 3-tab app (Home, Search, Cart) with a product list → product detail flow using typed routes. Back button works correctly on every screen. Selecting a tab doesn't recreate the screen if it was already visited.</div>
+          </div>
+          <div class="res"><strong>Resource:</strong> Google's Navigation Compose codelab. Use docs for Navigation 2.8+ — filter specifically for typed routes to avoid older string-based examples.</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase p4">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 4</span>
+            <span class="phase-title">Data layer — Retrofit, Room, Hilt, DataStore</span>
+            <span class="phase-dur">~3 weeks · the deepest phase</span>
+            <div class="ptags"><span class="ptag">Retrofit</span><span class="ptag">Room KMP-ready</span><span class="ptag">Hilt</span><span class="ptag">DataStore</span><span class="ptag">Paging 3</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Repository pattern</strong> — single source of truth. ViewModel → Repository → Remote (Retrofit) or Local (Room). Never ViewModel → Retrofit directly. This pattern maps directly to a typical backend service layer.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Retrofit + kotlinx.serialization</strong> — define APIs as Kotlin interfaces with <code>@GET</code>, <code>@POST</code> annotations. Serialization parses JSON into data classes automatically. Conceptually identical to your Spring Boot REST clients.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Room</strong> — SQLite with full coroutine support. <code>@Entity</code> data classes, <code>@Dao</code> interfaces with suspend functions, <code>@Database</code> class. Room generates all SQL. Same conceptual model as JPA/Hibernate on a backend — entities, repositories, queries.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>DataStore</strong> — replaces SharedPreferences. Fully coroutine-based, type-safe, no I/O on the main thread. Use this for auth token storage, user preferences, app settings.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Hilt (dependency injection)</strong> — <code>@HiltViewModel</code>, <code>@Inject</code>, <code>@Module</code>, <code>@Provides</code>, <code>@Singleton</code>. Learn the <em>why</em> before the annotations — it exists for testability and avoiding manual dependency wiring. This takes the longest to feel natural. Give it time and repetition.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Offline-first architecture</strong> — fetch from network → save to Room → serve UI from Room. Your app works without internet and refreshes when reconnected. Gold standard for any e-commerce or marketplace app.</div></div>
+          </div>
+          <div class="newbox">
+            <div class="newbox-label">Room + ViewModel + DataStore are now KMP-stable — I/O 2025</div>
+            <div class="newbox-text">Google announced at I/O 2025 that Room, ViewModel, DataStore, and Paging now have stable Kotlin Multiplatform support. The Room code you write today can be shared with an iOS target later with minimal changes. An official "Migrating Room to Room KMP" codelab was released at I/O. Start with Android-only Room — the migration path is documented and straightforward.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-label">Milestone</div>
+            <div class="milestone-text">A fully working product browser using TMDB's free public API. Paginated list (Paging 3), product detail, favourites stored in Room that persist across restarts. Full Hilt DI wiring. Offline-first: data loads from Room instantly, then refreshes from network in background. Loading, success, and error states on every screen. This structure maps directly to a real marketplace buyer flow.</div>
+          </div>
+          <div class="res"><strong>Resources:</strong> Philipp Lackner's "Clean Architecture with Compose" series. Google's "Now in Android" sample on GitHub — the reference implementation of all these patterns. Read it after building your own version, not before.</div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase p5">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 5</span>
+            <span class="phase-title">Capstone project — Marketplace app with Buyer + Seller flows</span>
+            <span class="phase-dur">Ongoing — learning becomes building</span>
+            <div class="ptags"><span class="ptag">FCM</span><span class="ptag">Razorpay SDK</span><span class="ptag">Fast2SMS OTP</span><span class="ptag">16KB page size</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Buyer app</strong> — product browse, search, cart, checkout. JWT auth: store the token in EncryptedDataStore, attach it to Retrofit's <code>OkHttpClient</code> as an interceptor header on every request.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Seller app</strong> — inventory management, order processing, analytics. A completely different UX surface from the buyer app but the same Compose + ViewModel + Repository stack underneath. Good practice in building two distinct products from one architecture.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>OTP login flow</strong> — Wire any SMS OTP provider (e.g. MSG91, Fast2SMS) on the backend. Android side: phone number input → OTP screen → token from backend → store in DataStore → navigate to home. Standard 3-screen auth flow.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>FCM push notifications</strong> — Firebase Cloud Messaging for order updates, seller alerts. One-time setup. Integrates with Hilt cleanly via a <code>FirebaseMessagingService</code>.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Razorpay Android SDK</strong> — drop-in payment sheet. Your backend already creates Razorpay orders. The SDK calls your order creation endpoint, handles the payment UI natively, and returns a success/failure callback to your app.</div></div>
+          </div>
+          <div class="newbox">
+            <div class="newbox-label">Android 16 + 16KB page size — check before Play Store submission</div>
+            <div class="newbox-text">Android 16 (releasing 2025) requires apps to support 16KB memory page size. Android Studio Meerkat now shows warnings for incompatible APKs automatically. Pure Kotlin apps using standard Jetpack libraries are generally already compatible. You'll only have issues with native C/C++ code or certain third-party SDKs. Check Razorpay's and Fast2SMS's SDK changelog for 16KB compatibility statements before your first Play Store submission.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-label">This is where learning ends and shipping begins</div>
+            <div class="milestone-text">Every concept from Phases 1–4 exists to make this phase faster. If you already have a working backend, you're not learning Android and building a server simultaneously — you're building a mobile client for something that already exists. That's a much easier problem than most Android beginners face.</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase p6">
+      <div class="tl-col"><div class="dot"></div><div class="vline"></div></div>
+      <div class="card" onclick="toggle(this)">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="phase-label">Phase 6 — future horizon</span>
+            <span class="phase-title">Kotlin Multiplatform — after your Android app ships</span>
+            <span class="phase-dur">Not now · but build Android with this in mind</span>
+            <div class="ptags"><span class="ptag">KMP stable</span><span class="ptag">Compose Multiplatform</span><span class="ptag">iOS from Kotlin</span></div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="card-body"><div class="card-inner">
+          <div class="divider"></div>
+          <div class="topics">
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>What KMP is</strong> — write business logic once in Kotlin, run it on Android and iOS. Not the UI (unless you use Compose Multiplatform) — just repositories, data models, network calls, Room databases. Google officially supports KMP since I/O 2024, production-stable since I/O 2025.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Why it matters</strong> — KMP gives you a path to native Android + iOS with shared Kotlin business logic — no full rewrite needed. Room, ViewModel, DataStore all KMP-stable as of 2025. Google Docs ships with KMP in production on iOS.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>Compose Multiplatform (CMP) 1.10</strong> — JetBrains' extension sharing Compose UI across Android, iOS, desktop, and web. iOS is now stable. Hot Reload is stable in CMP 1.10.0. If you know Compose for Android, you already know ~80% of CMP. Major companies including Shopify and Forbes ship it in production.</div></div>
+            <div class="topic-row"><div class="tdot"></div><div class="ttext"><strong>The play for your app</strong> — Ship Android first, validate the product, then use KMP to expand to iOS without a full rewrite. The clean architecture you build in Phases 1–5 (Repository pattern, ViewModel, separated layers) is exactly what KMP expects. No rearchitecting needed.</div></div>
+          </div>
+          <div class="newbox">
+            <div class="newbox-label">Don't learn KMP now — but you're already building for it</div>
+            <div class="newbox-text">KMP is production-ready. But it's a layer of complexity on top of solid Android fundamentals. Ship the Android app first. Once it works and users validate the product, KMP is a low-risk addition — your Room and ViewModel code migrates with minimal changes. The architecture decisions you make today are already KMP-compatible.</div>
+          </div>
+          <div class="res"><strong>Resources (when ready):</strong> Google's KMP codelab at developer.android.com. "Get Started with KMP" and "Migrating Room to Room KMP" codelabs from I/O 2025. JetBrains' kotlinlang.org KMP hub.</div>
+        </div></div>
+      </div>
+    </div>
+
+  </div><!-- end timeline -->
+</div>
+
+<script>
+function toggle(card) { card.classList.toggle('open'); }
+</script>
+</body>
+</html>
